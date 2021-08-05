@@ -1,0 +1,17 @@
+spring:
+  data:
+    mongodb:
+      database: library
+      host: test
+      port: 27017 
+server:
+  port: 8080
+management:
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
