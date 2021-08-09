@@ -4,6 +4,9 @@ To scrap from prometheus and from this app us ethe command:
 
 docker run -p 9090:9090 -v /Users/jacace/Desktop/src/sample_tech_observability_java/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
 
+Note:
+localhost and/or 127.0.0.1 are not recognized, use teh IP address (see: https://github.com/grafana/grafana/issues/14629)
+
 Sample metrics:
 (to run in teh expressions interface)
 Metrics that Prometheus exports about itself:
