@@ -29,30 +29,34 @@ public class ServiceGraphController {
 
     public ServiceGraphController(ServiceRepository serviceRepository) {
         this.serviceRepository = serviceRepository;
-        CollectorRegistry collectorRegistry=CollectorRegistry.defaultRegistry;
-        requestCount = Counter.build().name("cur_date_req_call").help("Number of cur date requests").register(collectorRegistry);
-        //The idea is that you get exemplars without changing your code.
-        //An ExemplarSampler is used implicitly under the hood
-        // to add exemplars to your metrics.
-        //Currently, only OpenTelemetry tracing is supported
-        ExemplarConfig.disableExemplars();
-        //only if you disabled the exemplar sampler globally 
-        /*
+        CollectorRegistry collectorRegistry = CollectorRegistry.defaultRegistry;
         requestCount = Counter.build()
                               .name("cur_date_req_call")
                               .help("Number of cur date requests")
-                              .withExemplars()
-                              .register(collectorRegistry);
-                              */
+                              .labelNames("label1", "label2")
+                .register(collectorRegistry);
+        // The idea is that you get exemplars without changing your code.
+        // An ExemplarSampler is used implicitly under the hood
+        // to add exemplars to your metrics.
+        // Currently, only OpenTelemetry tracing is supported
+        ExemplarConfig.disableExemplars();
+
+        // only if you disabled the exemplar sampler globally
+        /* requestCount = Counter.build()
+         *                       .name("cur_date_req_call")
+         *                       .help("Number of cur date requests")
+         *                       .withExemplars()
+         *                       .register(collectorRegistry);
+         */
     }
 
     @GetMapping()
-    //public @ResponseBody Flux<Service> get() {
+    // public @ResponseBody Flux<Service> get() {
     public @ResponseBody Service get() {
 
-        requestCount.inc();
-        //per observation exemplar
-        //You can explicitly provide an exemplar for an individual observation. 
+        requestCount.labels("value1", "value2");
+        // per observation exemplar
+        // You can explicitly provide an exemplar for an individual observation.
         requestCount.incWithExemplar("span_id", "abcdef", "trace_id", "123456");
 
         Date curDate = new Date();
