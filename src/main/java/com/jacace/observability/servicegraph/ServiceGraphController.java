@@ -12,9 +12,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import reactor.core.publisher.Flux;
 import org.springframework.data.domain.PageRequest;
 import io.prometheus.client.Counter;
+import io.prometheus.client.exemplars.ExemplarConfig;
+import io.micrometer.core.annotation.Timed;
 import io.prometheus.client.CollectorRegistry;
 
 @Controller
+@Timed
 @RequestMapping(path = "/servicegraph")
 public class ServiceGraphController {
 
@@ -28,12 +31,30 @@ public class ServiceGraphController {
         this.serviceRepository = serviceRepository;
         CollectorRegistry collectorRegistry=CollectorRegistry.defaultRegistry;
         requestCount = Counter.build().name("cur_date_req_call").help("Number of cur date requests").register(collectorRegistry);
+        //The idea is that you get exemplars without changing your code.
+        //An ExemplarSampler is used implicitly under the hood
+        // to add exemplars to your metrics.
+        //Currently, only OpenTelemetry tracing is supported
+        ExemplarConfig.disableExemplars();
+        //only if you disabled the exemplar sampler globally 
+        /*
+        requestCount = Counter.build()
+                              .name("cur_date_req_call")
+                              .help("Number of cur date requests")
+                              .withExemplars()
+                              .register(collectorRegistry);
+                              */
     }
 
     @GetMapping()
     //public @ResponseBody Flux<Service> get() {
     public @ResponseBody Service get() {
+
         requestCount.inc();
+        //per observation exemplar
+        //You can explicitly provide an exemplar for an individual observation. 
+        requestCount.incWithExemplar("span_id", "abcdef", "trace_id", "123456");
+
         Date curDate = new Date();
         SimpleDateFormat outputFormat = new SimpleDateFormat(dateTimeFormat);
 
