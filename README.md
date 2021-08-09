@@ -15,13 +15,13 @@ Examples to run in the expressions interface or graphs tab.
 ### Metrics that Prometheus exports about itself ###
 
 * Amount of time between target scrapes:
-          * prometheus_target_interval_length_seconds
+    * prometheus_target_interval_length_seconds
 * Count the number of returned time series: 
-          * count(prometheus_target_interval_length_seconds)
+    * count(prometheus_target_interval_length_seconds)
 * To graph the per-second rate of chunks being created in the self-scraped: 
-          * rate(prometheus_tsdb_head_chunks_created_total[1m])
+    * rate(prometheus_tsdb_head_chunks_created_total[1m])
 * Other examples: 
-          * avg by (job, instance, mode) (rate(node_cpu_seconds_total[5m]))
+    * avg by (job, instance, mode) (rate(node_cpu_seconds_total[5m]))
 
 ## Springboot support for metrics ##
 A meter is the interface for collecting a set of measurements (which we individually call metrics) about your application. spring-metrics packs with a supported set of Meter primitives including: Timer, Counter, Gauge, DistributionSummary, and LongTaskTimer
