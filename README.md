@@ -24,12 +24,17 @@ Examples to run in the expressions interface or graphs tab.
     * avg by (job, instance, mode) (rate(node_cpu_seconds_total[5m]))
 
 ## Springboot support for metrics ##
-A meter is the interface for collecting a set of measurements (which we individually call metrics) about your application. spring-metrics packs with a supported set of Meter primitives including: Timer, Counter, Gauge, DistributionSummary, and LongTaskTimer
 
-### @Timed annotation ###
-Adding  to the controller creates a Timer time series named http_server_requests which by default contains dimensions for the HTTP status of the response, HTTP method, exception type if the request fails, and the pre-variable substitution parameterized endpoint URI.
+To expose Out-Of-The-Box "OOTB" metrics to prometehus you just need to include the required maven dependencies and enable them in the application configuration file.
 Metrics will be published for JVM GC metrics.
 If you are using logback, counts will be collected for log events at each level.
+
+### Springboot annotations ###
+Besides the OOTB you can also use annotations e.g.: @Timed
+Adding @Timed to the controller creates a Timer time series named http_server_requests which by default contains dimensions for the HTTP status of the response, HTTP method, exception type if the request fails, and the pre-variable substitution parameterized endpoint URI.
+
+## Definitions ##
+A meter is the interface for collecting a set of measurements (which we individually call metrics) about your application. spring-metrics packs with a supported set of Meter primitives including: Timer, Counter, Gauge, DistributionSummary, and LongTaskTimer
 
 
 
